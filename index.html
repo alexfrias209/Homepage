@@ -168,7 +168,16 @@
     margin-right: 30px;
     margin-bottom: 5px;
   }
+h3 {
+    font-family: "Source Sans Pro";
+    font-weight: bold; /* Make the font bold */
+    font-size: 24px; /* Increase the font size */
+    text-align: center;
+    margin-top: 20px;
+    margin-bottom: 20px;
+        font-style: italic; /* Make the text italic */
 
+}
   .vert-cent {
     position: relative;
       top: 50%;
@@ -296,7 +305,7 @@
   }
   
   .toc-container ul {
-    background-color: rgba(202, 156, 148, 0.3);
+    background-color: (202, 156, 148, 0.3);
     color: black;
     cursor: pointer;
     padding: 18px;
@@ -314,7 +323,7 @@
   text-decoration: none;  /* optional: removes underline */
 }
   .toc-container ul:hover {
-    background-color: rgba(235, 145, 117, 0.5);
+    background-color: rgba(202, 156, 148, 0.3);
 
   }
   
@@ -364,707 +373,60 @@
 
 <body>
 
-    <br>
-    <center><span id="title" style="font-size:28px;font-weight:bold;font-family:Source Sans Pro;"><font size="+4">Like Human, Like Robot:</font><br>Exploring Model Architecture and Algorithm Design Decisions in Robotic Imitation</span></center><br/>
     
-    <!-- <div class="table-like" style="justify-content:space-evenly;max-width:1000px;margin:auto;">
-        <hr>
-        <center><span style="font-size:25px" class="line-break">Anonymous authors</span></center>
-    </div> -->
-    <!-- <div class="table-like" style="justify-content:space-evenly;max-width:1000px;margin:auto;">
-        <hr>
-        <center><span style="font-size:20px" class="line-break"><a href="TODO">Paper</a></span></center>
-    </div> -->
-
-    
-    <div style="width:800px; margin:0 auto" align="justify">
-      <hr>
-      <h1>Abstract (abridged)</h1>
-
-      <p> In a series of robotic manipulation experiments, we observed distinct performance variations based on model architectures, observation methods, and temporal strategies. The Model Architecture Experiment on Franka PyBullet Simulation indicated that shallower image encoders are more reliable for language-conditioned grasping compared to deeper variants, with the latter often misgrasping. However, deeper image encoder backbones benefited from additional MLP policy head layers, offsetting performance declines from pre-trained weights. The Observation Spaces Experiment on Robomimic MuJoCo Simulation demonstrated superior performance with wrist camera images, either alone or combined with 3rd-person views, whereas exclusive reliance on the latter proved inefficient. The Temporal Correlation Experiments using Franka highlighted the prowess of simpler algorithms in basic tasks, but emphasized the unique potential of future action predictions in complex tasks with limited visibility. Cumulatively, our findings underscore the efficacy of shallow encoders, the advantages of wrist cameras, and the promise yet variability of temporal correlations in robotic tasks.</p>
+  <div class="container" style="display: flex; align-items: center; max-width: 1000px; margin: auto;">
+    <div class="description" style="flex: 2; padding-right: 20px;">
+      <h1>Alex Frias</h1>
+      <p>
+        I am an Electrical Engineering Specialist working under the guidance of Dr. Ayush Pandey at UC Merced, focusing on the development of safety-critical systems. My work explores control theory, safety verification, and transformer-based learning in nonlinear systems.
+      </p>
+      <p>
+        Previously, I graduated from the University of California, Merced, with a Bachelor's degree in Computer Science and Engineering. Research background spans to areas in safety-critical systems, robotics, agriculture, HPC, and education with participation in research programs such as LINXS, MACES, and NCAS.
+      </p>
+      <p>
+        I am passionate about AI development and mentoring, with my goal to contribute to the advancement of trustworthy and efficient AI systems, particularly in healthcare.
+  </p>.
+      </p>
+      <p style="text-align: center;">
+        <a href="https://github.com/alexfrias209">GitHub</a> | 
+        <a href="https://huggingface.co/afrias5">HuggingFace</a> | 
+        <a href="https://www.linkedin.com/in/alex-frias209/">LinkedIn</a> | 
+        <a href="https://www.youtube.com/@alexfrias6467/featured">YouTube</a> | 
+        <a href="https://drive.google.com/file/d/17n92w7B57nfxTJVceRs9oJec2lyC4z2f/view?usp=sharing" target="_blank">Resume</a>
+      </p>
     </div>
+    <div class="profile-image" style="flex: 1; display: flex; justify-content: center;">
+      <img src="resources/pictures/alex-frias.jpg" alt="Alex Frias">
+    </div>
+  </div>
+
 
     <div style="max-width:1000px">
       <hr>
       <div class="toc-container">
-        <h3>Table of Contents</h3>
+        <h3>Professional Journey</h3>
         <ul>
-            <a href="#section1"><li>Video Results: Experiment 1 - Franka (PyBullet Sim)</li></a>
+                    <a href="https://alexfrias209.github.io/FrankaRoboticVideos/" target="_blank"><li>Robotics Videos</li></a>
+
         </ul>
         <ul>
-          <a href="#section2"><li>Video Results: Experiment 2 - Robomimic (MuJoCo Sim)</li></a>
+        <a href="https://citris.ucmerced.edu/people.html" target="_blank"><li>CITRIS People</li></a>
       </ul>
       <ul>
-        <a href="#section3"><li>Video Results: Experiment 3 - Franka (Real World)</li></a>
+        <a href="https://ayush-pandey.github.io/group/index.html" target="_blank"><li>Ayush Pandey's Research Group</li></a>
     </ul>
-    <!-- <ul>
-      <a href="#section4"><li>Expert Video Demonstrations: Franka PyBullet Sim</li></a>
-  </ul>
-  <ul>
-    <a href="#section5"><li>Expert Video Demonstrations: Robomimic MuJoCo Sim</li></a>
-</ul>
-<ul>
-  <a href="#section6"><li>Expert Video Demonstrations: Franka Real World</li></a>
-</ul> -->
-      </div>
-    <hr>
-    <h1>Method Overview</h1>
-    <p>
-      Our primary objective is to empower continuous-control robotic policies to proficiently execute manipulation tasks. This is achieved by training these policies using Behavior Cloning (BC) on offline demonstration datasets. The models are designed to accept a diverse range of inputs including image observations which can be derived from either a wrist-mounted camera or a 3rd-person perspective. Additionally, they incorporate the proprioceptive state of the robot, such as the end-effector pose, and also benefit from language annotations that provide descriptive insights into the tasks. The outputs of these models are intricately detailed, producing a 6-DoF (Degrees of Freedom) delta position/rotation and also accounting for a 1-DoF gripper action.<br><br>
-      
-      Diving deeper into our experiments, the <strong>Model Architecture Experiment</strong> conducted on Franka PyBullet Simulation is primarily centered around language-conditioned target cube grasping using single-step BC. This experiment compares the performances of shallow against deep image encoder backbones, all of which are tested with a fixed-size Multilayer Perceptron (MLP) policy head. A noteworthy aspect of our technique in this experiment is the use of a late-fusion method where image and language embeddings are concatenated for enhanced performance.<br><br>
-      
-      In another experiment, the <strong>Observation Spaces Experiment</strong> on Robomimic MuJoCo Simulation, our focus is split between two tasks. The first is the Lift task, dedicated to grasping, and the second, the Can task, is a pick-and-place activity. Both these tasks are governed by the principles of single-step BC. A pivotal part of this experiment is our exploration into the efficiency and applicability of various observation spaces.<br><br>
-      
-      Lastly, our <strong>Temporal Correlation Experiments</strong> conducted in a real-world scenario with Franka brings forth tasks like the Can pick-and-place and the Box reorienting and stacking. The crux of this experiment is to gauge the comparative advantages of encoding historical data versus forecasting imminent action sequences, a study made even more compelling when the only input is sourced from wrist camera images.<br><br>
-      
-      We invite readers to delve deeper into the findings and insights from these experiments.
-      </p>
-      
-     
-    </div>
-
-    <!-- <div style="max-width:1000px;">
-      <hr>
-      <center><h1>Types of Generalization</h1></center>
-      <p>
-        In this work, we aim to improve robotic manipulation performance in terms of two types of generalization:
-      </p>
-      <ul>
-        <li><b>Environment generalization:</b> the ability to execute a learned manipulation task in a new environment outside the distribution of expert robot demonstration data</li>
-        <li><b>Task generalization:</b> the ability to execute a new, longer-horizon task when the expert robot demonstrations only perform an easier, shorter-horizon task</li>
-      </ul>
-    </div> -->
-
-    <!-- <div style="max-width:1000px;">
-      <hr>
-      <center><h1>Environment Generalization Tasks</h1></center>
-      <p>
-        Tasks used for environment generalization experiments are shown below. Expert robot demonstrations are collected only in the environment configurations highlighted in <span style="color:magenta;">pink</span>, while expert human demonstrations are collected in the configurations highlighted in <span style="color:blue;">blue</span>. In the toy packing task, the toys highlighted in <span style="color:darkgreen;">green</span> are not seen in the human or robot demonstrations but appear in the robot play dataset, while the toys highlighted in <span style="color:rgb(210, 210, 31);">yellow</span> are not seen at all in human or robot play/demonstration data (i.e., these are fully held out).
-      </p>
-      <div class="table-like" style="justify-content:space-evenly;margin:auto;padding:0px;">
-        <img src="resources/figures/env-gen-tasks.001.jpeg" alt="Teasure figure">
-      </div>
-    </div> -->
-
-    <!-- <div style="max-width:1000px;">
-      <hr>
-      <center><h1>Task Generalization Tasks</h1></center>
-      <p>
-        Tasks used for task generalization experiments are shown below. Expert robot demonstrations perform an easier, shorter-horizon task, such as grasping <span style="color:magenta;">pink</span>; expert human demonstrations either perform the full task or portions of the task that are missing in the robot demonstrations (highlighted in <span style="color:blue;">blue</span>).
-      </p>
-      <div class="table-like" style="justify-content:space-evenly;margin:auto;padding:0px;">
-        <img src="resources/figures/task-gen-tasks.001.jpeg" alt="Teasure figure">
-      </div>
-    </div> -->
-
-
-    <div style="max-width:1000px">
-      <hr>
     
+    <ul>
+        <a href="https://www.gsk.ai/news/stanford-linxs-students-visit-gsk-ai-ml-to-explore-opportunities-in-healthcare/" target="_blank"><li>Stanford LINXS Visit to GSK AI</li></a>
+    </ul>
     
-    <div id="content" style="display: none;">
-        Content to show
-    </div>
-      <h1 id="section1">Experiment 1 - Franka (PyBullet Sim)</h1>
-      <p>
-        In this section, we show rollouts of Language-conditioned target cube grasping policies. We use late fusion and look at different image encoders with a set MLP size and further explor the deeper image encoder models with a +9-layer MLP head. All of these are concatenated with the DistilBERT language encoder.
-      </p>
-      <h2 style=" font-style: italic; color: black;">success rate</h2>
-
-      <table style="margin-bottom: 5px;   border: 1px solid black;
-      border-radius: 10px; width: 100%; ">
-          <thead>
-              <tr>
-                <th style="border-bottom: 1px solid #000; text-align: left;">Model</th>
-                <th style="border-bottom: 1px solid #000; text-align: left;"></th>
-              </tr>
-          </thead>
-          <tbody>
-            <tr>
-                <td><b>4-layer CNN</b></td>
-                <td style="text-align: right;">100%</td>
-            </tr>
-            <tr>
-                <td><b>ResNet-18, trained from scratch</b></td>
-                <td style="text-align: right;">100%</td>
-            </tr>
-            <tr>
-                <td><b>ResNet-18, pre-trained and fine-tuned</b></td>
-                <td style="text-align: right;">78%</td>
-            </tr>
-            <tr>
-                <td><b>ResNet-18, trained from scratch (+9 MLP policy layers)</b></td>
-                <td style="text-align: right;">100%</td>
-            </tr>
-            <tr>
-                <td><b>ResNet-18, pre-trained and fine-tuned(+9 MLP policy layers)</b></td>
-                <td style="text-align: right;">100%</td>
-            </tr>
-            <tr>
-                <td><b>EfficientNet-B4, trained from scratch</b></td>
-                <td style="text-align: right;">67%</td>
-            </tr>
-            <tr>
-                <td><b>EfficientNet-B4, pre-trained and fine-tuned</b></td>
-                <td style="text-align: right;">67%</td>
-            </tr>
-            <tr>
-                <td><b>EfficientNet-B4, trained from scratch (+9 MLP policy layers)</b></td>
-                <td style="text-align: right;">100%</td>
-            </tr>
-            <tr>
-                <td><b>EfficientNet-B4, pre-trained and fine-tuned(+9 MLP policy layers)</b></td>
-                <td style="text-align: right;">100%</td>
-            </tr>
-        </tbody>
-      </table>
-
-
-      <div class="table-like" style="justify-content:space-evenly;margin:auto;padding:0px;">
-        <div>
-        
-        </div>
-      </div>
-      <h2 style="font-style: italic; color: black;">Language-conditioned target cube grasping</h2>
-
-      <h3>Shallow Model</h3>
-
-      <div class="table-like" style="justify-content:space-evenly;margin:auto;padding:0px;">
-        <div>
-          <center style="margin-bottom:5px; font-size: 0.9em"><b>4-Layer CNN</b></center>
-          <video width="350" controls>
-            <source src="resources/videos/pybullet_results/4CNN-Results.mp4" type="video/mp4">
-        </video>
-        </div>
-      </div>
-      <p>
-        Below are sample rollouts of the Deeper image encoders. Although training with pretrained weights or from scratch may or may not help, in either case adding a larger MLP head size caused these deeper models to successfully complete the task. All clips are sped up by 9x.
-      </p>
-      <h3>Deeper Models</h3>
-
-    
-
-<div class="table-like" style="justify-content:space-evenly;margin:auto;padding:0px;">
-        <div >
-          <center style="margin-bottom:5px; font-size: 0.7em"><b>ResNet-18, trained from scratch</b></center>
-          <video width="350" controls>
-            <source src="resources/videos/pybullet_results/resScratch.mp4" type="video/mp4">
-          </video>
-        </div>
-        <div >
-          <center style="margin-bottom:5px; font-size: 0.7em"><b>ResNet-18, trained from scratch (+9 MLP policy layers)</b></center>
-          <video width="350" controls>
-            <source src="resources/videos/pybullet_results/ResFalse11.mp4" type="video/mp4">
-          </video>
-        </div>
-        <div >
-                      <center style="margin-bottom:5px; font-size: 0.7em"><b>ResNet-18, pre-trained and fine-tuned</b></center>
-          <video width="350" controls>
-            <source src="resources/videos/pybullet_results/res_pretrained.mp4" type="video/mp4">
-          </video>
-        </div>
-        <div >
-          <center style="margin-bottom:5px; font-size: 0.7em"><b>ResNet-18, pre-trained and fine-tuned(+9 MLP policy layers)</b></center>
-          <video width="350" controls>
-            <source src="resources/videos/pybullet_results/ResTrue11.mp4" type="video/mp4">
-          </video>
-        </div>
-        
-      </div>
-
-      <div class="space">
-        <hr style="width: 15%; height: 0; margin: -10px auto 0 auto; border: none; border-top: 5px dotted #b1b1b1; background: none;">
-    </div>
-    
-    
-
-
-
-<div class="table-like" style="justify-content:space-evenly;margin:auto;padding:0px;">
-<div >
-  <center style="margin-bottom:5px; font-size: 0.7em"><b>EfficientNet-B4, srained from scratch</b></center>
-  <video width="350" controls>
-    <source src="resources/videos/pybullet_results/eff_falseResults.mp4" type="video/mp4">
-  </video>
-</div>
-<div >
-  <center style="margin-bottom:5px; font-size: 0.7em"><b>EfficientNet-B4, trained from scratch (+9 MLP policy layers)</b></center>
-  <video width="350" controls>
-    <source src="resources/videos/pybullet_results/effFalse11.mp4" type="video/mp4">
-  </video>
-</div>
-<div >
-              <center style="margin-bottom:5px; font-size: 0.7em"><b>EfficientNet-B4, pre-trained and fine-tuned</b></center>
-  <video width="350" controls>
-    <source src="resources/videos/pybullet_results/eff_true.mp4" type="video/mp4">
-  </video>
-</div>
-<div >
-  <center style="margin-bottom:5px; font-size: 0.7em;"><b>EfficientNet-B4, pre-trained and fine-tuned(+9 MLP policy layers)</b></center>
-  <video width="350" controls>
-    <source src="resources/videos/pybullet_results/effTrue11.mp4" type="video/mp4">
-  </video>
-</div>
-
-</div>
-
-    </div>
-
-
-    <div style="max-width:1000px">
-      <hr>
-      <h1 id="section2">Experiment 2 - Robomimic (MuJoCo Sim)</h1>
-      
-
-      <p>
-        In this section, we show rollouts of different observation spaces used in a Lift task (grasping) and a Can task (pick-and-place). We are evaluating performance of wrist camera images, 3rd-person camera images, and both wrist + 3rd-person camera images. All clips are sped up by 7x.        </p>
-        <h2 style="margin-bottom: 10px; font-style: italic; color: black;">success rate</h2>
-
+    <ul>
+        <a href="https://directory.ucmerced.edu/person/afrias5" target="_blank"><li>UC Merced Directory</li></a>
+    </ul>
  
-
-
-    <div class="table-like" style="justify-content:space-evenly;margin:auto;padding:0px;margin-bottom:0px;">
-      <div>
-        <table style="margin-bottom: 5px;   border: 1px solid black;
-        border-radius: 10px; width: 100%; ">
-            <thead>
-                <tr>
-                  <th style="border-bottom: 1px solid #000; text-align: left;">Lifting Task</th>
-                  <th style="border-bottom: 1px solid #000; text-align: left;"></th>
-                </tr>
-            </thead>
-            <tbody>
-              <tr>
-                  <td><b>Wrist camera images</b></td>
-                  <td style="text-align: right;">100%</td>
-              </tr>
-              <tr>
-                  <td><b>3rd person camera images</b></td>
-                  <td style="text-align: right;">60%</td>
-              </tr>
-              <tr>
-                  <td><b>Wrist + 3rd-person camera images</b></td>
-                  <td style="text-align: right;">100%</td>
-              </tr>
-          </tbody>
-        </table>
-
       </div>
-      <div>
-    
-        <table style="margin-bottom: 5px;   border: 1px solid black;
-        border-radius: 10px; width: 100%; ">
-          <thead>
-              <tr>
-                <th style="border-bottom: 1px solid #000; text-align: left;">Can pick-and-place</th>
-                <th style="border-bottom: 1px solid #000; text-align: left;"></th>
-              </tr>
-          </thead>
-          <tbody>
-            <tr>
-                <td><b>Wrist camera images</b></td>
-                <td style="text-align: right;">84%</td>
-            </tr>
-            <tr>
-                <td><b>3rd person camera images</b></td>
-                <td style="text-align: right;">0%</td>
-            </tr>
-            <tr>
-                <td><b>Wrist + 3rd-person camera images</b></td>
-                <td style="text-align: right;">88%</td>
-            </tr>
-        </tbody>
-      </table>
-      </div>
-     
-    </div>
-
-
-      <h2 style="font-style: italic; color: black;">Lifting task</h2>
-     
-      <div class="table-like" style="justify-content:space-evenly;margin:auto;padding:0px;margin-bottom:0px;">
-        <div>
-          <center style="margin-bottom:5px"><b>Wrist camera images</b></center>
-          <video width="290" controls>
-            <source src="resources/videos/robomimic_results/Lift-wrist.mp4" type="video/mp4">
-          </video>
-        </div>
-        <div>
-          <center style="margin-bottom:5px"><b>3rd person camera images</b></center>
-          <video width="290" controls>
-            <source src="resources/videos/robomimic_results/Lift-3rdperson.mp4" type="video/mp4">
-          </video>
-        </div>
-        <div >
-          <center style="margin-bottom:5px"><b><u>Wrist + 3rd-person camera images</u></b></center>
-          <video width="290" controls>
-            <source src="resources/videos/robomimic_results/Lift-wrist+3rd.mp4" type="video/mp4">
-          </video>
-        </div>
-      </div>
-      <h2 style="font-style: italic; color: black;">Can pick-and-place</h2>
-
-      <div class="table-like" style="justify-content:space-evenly;margin:auto;padding:0px;margin-bottom:0px;">
-        <div>
-          <center style="margin-bottom:5px"><b>Wrist camera images</b></center>
-          <video width="290" controls>
-            <source src="resources/videos/robomimic_results/can-wrist.mp4" type="video/mp4">
-          </video>
-        </div>
-        <div>
-          <center style="margin-bottom:5px"><b>3rd person camera images</b></center>
-          <video width="290" controls>
-            <source src="resources/videos/robomimic_results/can-3rd.mp4" type="video/mp4">
-          </video>
-        </div>
-        <div >
-          <center style="margin-bottom:5px"><b><u>Wrist + 3rd-person camera images</u></b></center>
-          <video width="290" controls>
-            <source src="resources/videos/robomimic_results/can-3rd+wrist.mp4" type="video/mp4">
-          </video>
-        </div>
-      </div>
-      <p>
-        As shown above, a policy using only 3rd-person camera robot demonstrations underperforms and is unable to complete the full task . In contrast, using wrist camera robot demonstrations or wrist + 3rd-person camera images outperforms 3rd-person camera images.
-      </p>
-      <h2 style="font-style: italic; color: black;">Camera perspective</h2>
  
-
-      <div class="table-like" style="display: flex; justify-content:center; margin:auto; padding:0px; margin-bottom:0px;">
-        <div style="margin-right: -4px;">
-            <center style="margin-bottom:5px"><b>Lift 3rd-person video</b></center>
-            <video width="290" controls>
-                <source src="resources/videos/robomimic-point/lift-3rd.mp4" type="video/mp4">
-            </video>
-        </div>
-        <div style="margin-left: -4px;">
-            <center style="margin-bottom:5px"><b>Lift eye-in-hand video</b></center>
-            <video width="290" controls>
-                <source src="resources/videos/robomimic-point/lift-first.mp4" type="video/mp4">
-            </video>
-        </div>
-    </div>
-    
  
-    
-      <div class="space">
-        <hr style="width: 15%; height: 0; margin: -10px auto 0 auto; border: none; border-top: 5px dotted #b1b1b1; background: none;">
-    </div>
-  
-      <div class="table-like" style="display: flex; justify-content:center; margin:auto; padding:0px; margin-bottom:0px;">
-        <div style="margin-right: -4px;">
-            <center style="margin-bottom:5px"><b>Can pick-and-place 3rd-person video</b></center>
-            <video width="290" controls>
-                <source src="resources/videos/robomimic-point/can-3.mp4" type="video/mp4">
-            </video>
-        </div>
-        <div style="margin-left: -4px;">
-            <center style="margin-bottom:5px"><b>Can pick-and-place eye-in-hand video</b></center>
-            <video width="290" controls>
-                <source src="resources/videos/robomimic-point/can-first.mp4" type="video/mp4">
-            </video>
-        </div>
-    </div>
-    
-
-    </div>
-
-
-    <div style="max-width:1000px">
-      <hr>
-      <h1 id="section3">Experiment 3 - Franka (Real World)        </h1>
-      <p>
-        In this section, we show rollouts of different temporal correlation concepts used in a can pick-and-place task and box reorienting and stacking task. We are evaluating performance of stateless Vs. encoding history, Vs. predicting future action sequence using just wrist camera images.        </p>
-        <h2 style="margin-bottom: 10px; font-style: italic; color: black;">success rate</h2>
-
-        
-              <div class="table-like" style="justify-content:space-evenly;margin:auto;padding:0px;margin-bottom:0px;">
-      <div>
-        <table style="margin-bottom: 5px;   border: 1px solid black;
-        border-radius: 10px; width: 100%; ">
-            <thead>
-                <tr>
-                  <th style="border-bottom: 1px solid #000; text-align: left;">Lifting Task</th>
-                  <th style="border-bottom: 1px solid #000; text-align: left;"></th>
-                </tr>
-            </thead>
-            <tbody>
-              <tr>
-                  <td><b>single-step BC</b></td>
-                  <td style="text-align: right;">90%</td>
-              </tr>
-              <tr>
-                <td><b>BC-RNN</b></td>
-                <td style="text-align: right;">30%</td>
-            </tr>
-              <tr>
-                  <td><b>open-loop BC-RNN</b></td>
-                  <td style="text-align: right;">100%</td>
-              </tr>
-              <tr>
-                  <td><b>ACT</b></td>
-                  <td style="text-align: right;">60%</td>
-              </tr>
-          </tbody>
-          
-        </table>
-
-      </div>
-      <div>
-        <table style="margin-bottom: 5px;   border: 1px solid black;
-        border-radius: 10px; width: 100%; ">
-          <thead>
-              <tr>
-                <th style="border-bottom: 1px solid #000; text-align: left;">Can pick-and-place</th>
-                <th style="border-bottom: 1px solid #000; text-align: left;"></th>
-              </tr>
-          </thead>
-          <tbody>
-            <tr>
-                <td><b>single-step BC</b></td>
-                <td style="text-align: right;">0%</td>
-            </tr>
-            <tr>
-              <td><b>BC-RNN</b></td>
-              <td style="text-align: right;">0%</td>
-          </tr>
-            <tr>
-                <td><b>open-loop BC-RNN</b></td>
-                <td style="text-align: right;">0%</td>
-            </tr>
-            <tr>
-                <td><b>ACT</b></td>
-                <td style="text-align: right;">80%</td>
-            </tr>
-        </tbody>
-        
-      </table>
-      </div>
-     
-    </div>
-      <h2 style="font-style: italic; color: black;">Can pick-and-place task</h2>
-
-      <div class="table-like" style="justify-content:space-evenly;margin:auto;padding:0px;margin-bottom:0px;">
-        <div>
-          <center style="margin-bottom:5px"><b>single-step BC</b></center>
-          <video width="290" controls>
-            <source src="resources/videos/panda-results/can-single.mp4" type="video/mp4">
-          </video>
-        </div>
-        <div>
-          <center style="margin-bottom:5px"><b>BC-RNN</b></center>
-          <video width="290" controls>
-            <source src="resources/videos/panda-results/can-bc-rnn.mp4" type="video/mp4">
-          </video>
-        </div>
-      </div>
-      <div class="table-like" style="justify-content:space-evenly;margin:auto;padding:0px;margin-bottom:0px;">
-        <div>
-          <center style="margin-bottom:5px"><b>open-loop BC-RNN</b></center>
-          <video width="290" controls>
-            <source src="resources/videos/panda-results/can-open.mp4" type="video/mp4">
-          </video>
-        </div>
-        <div>
-          <center style="margin-bottom:5px"><b>ACT</b></center>
-          <video width="290" controls>
-            <source src="resources/videos/panda-results/can-act.mp4" type="video/mp4">
-          </video>
-        </div>
-      </div>
-      <h2 style="font-style: italic; color: black;">Box reorienting and stacking task</h2>
-
-      <div class="table-like" style="justify-content:space-evenly;margin:auto;padding:0px;margin-bottom:0px;">
-        <div>
-          <center style="margin-bottom:5px"><b>single-step BC</b></center>
-          <video width="290" controls>
-            <source src="resources/videos/panda-results/box - single.mp4" type="video/mp4">
-          </video>
-        </div>
-        <div>
-          <center style="margin-bottom:5px"><b>BC-RNN</b></center>
-          <video width="290" controls>
-            <source src="resources/videos/panda-results/box - bc-rnn.mp4" type="video/mp4">
-          </video>
-        </div>
-      </div>
-      <div class="table-like" style="justify-content:space-evenly;margin:auto;padding:0px;margin-bottom:0px;">
-        <div>
-          <center style="margin-bottom:5px"><b>open-loop BC-RNN</b></center>
-          <video width="290" controls>
-            <source src="resources/videos/panda-results/box-open.mp4" type="video/mp4">
-          </video>
-        </div>
-        <div>
-          <center style="margin-bottom:5px"><b>ACT</b></center>
-          <video width="290" controls>
-            <source src="resources/videos/panda-results/box-act.mp4" type="video/mp4">
-          </video>
-        </div>
-      </div>
-      <p>
-        As shown above, ACT is the most optimal choice. Future action predictions
-       improves success rates in tasks with severe partial
-        observability, but can suffer lower performance that may be caused by overfitting
-        to suboptimal, highly multimodal human demos as shown in the lift task.
-      </p>
-      <h2 style="font-style: italic; color: black;">Camera perspective</h2>
-      <div class="table-like" style="display: flex; justify-content:center; margin:auto; padding:0px; margin-bottom:0px;">
-        <div style="margin-right: -4px;">
-            <center style="margin-bottom:5px;font-size: 0.8em"><b>Can pick-and-place eye-in-hand video</b></center>
-            <video width="290" controls>
-                <source src="resources/videos/panda-results/demo-can.mp4" type="video/mp4">
-            </video>
-        </div>
-        <div style="margin-left: -4px;">
-            <center style="margin-bottom:5px;font-size: 0.8em"><b>Box reorienting and stacking eye-in-hand video</b></center>
-            <video width="290" controls>
-                <source src="resources/videos/panda-results/demo-box.mp4" type="video/mp4">
-            </video>
-        </div>
-    </div>
-    </div>
-
-
-
-
-<hr>
- 
-
-
-
-<!-- 
-    <button type="button" class="collapsible" id="expand-button" style="margin-top: 10px;">Click here to see expert video demonstrations we collected for our experiments.</button>
-    <div class="content">
-
-      <div style="max-width:1000px">
-        <hr>
-        <h1>Expert Video Demonstrations for Behavioral Cloning</h1>
-        <p style="text-align: center; margin-bottom: 60px;">
-          For each environment task, we collect expert video demonstrations. All videos are sped up by 3x.
-      </p>
-      
-        <h2 id="section4">Franka PyBullet Sim</h2>
-
-        <h3 style="text-decoration: underline;font-style: italic;">Target cube grasping Task</h3>
-         <div class="table-like" style="display: flex; justify-content:center; margin:auto; padding:0px; margin-bottom:0px;">
-          <div style="margin-right: -4px;">
-            <center style="margin-bottom:5px"><b>Sample robot eye-in-hand demonstrations</b></center>
-            <video width="290" height = "200" controls>
-                  <source src="resources/videos/pybullet_data/pybulletDataCollectionwrist.mp4" type="video/mp4">
-              </video>
-          </div>
-          <div style="margin-left: -4px;">
-              <center style="margin-bottom:5px"><b>Sample robot 3rd-person demonstrations</b></center>
-              <video width="290" height = "200" controls>
-                 <source src="resources/videos/pybullet_data/pybullet_datacollection.mp4" type="video/mp4">
-              </video>
-          </div>
-      </div>
-       
-   
-        <h2 id="section5"> Robomimic MuJoCo Sim</h2>
-        <center>
-          These datasets were collected by 1 operator using the RoboTurk platform. Each dataset consists of 200 successful trajectories.
-        </center>
-        <h3 style="text-decoration: underline;font-style: italic;">Lift cube task</h3>
-       
-        <div class="table-like" style="display: flex; justify-content:center; margin:auto; padding:0px; margin-bottom:0px;">
-          <div style="margin-right: -4px;">
-              <center style="margin-bottom:5px;font-size: 0.7em;"><b>Sample proficient-human eye-in-hand demonstrations </b></center>
-              <video width="290" controls>
-                  <source src="resources/videos/cube-stacking/cube-stacking_task-gen_robot+play_rollouts.mp4" type="video/mp4">
-              </video>
-          </div>
-          <div style="margin-left: -4px;">
-              <center style="margin-bottom:5px; font-size: 0.7em;"><b>Sample proficient-human 3rd-person demonstrations</b></center>
-              <video width="290" controls>
-                  <source src="resources/videos/cube-stacking/cube-stacking_task-gen_robot+human+cyclegan_rollouts.mp4" type="video/mp4">
-              </video>
-          </div>
-      </div>
-      <h3 style="text-decoration: underline;font-style: italic;font-style: italic;">Can pick-and-place Task </h3>
-
-     
-      <div class="table-like" style="display: flex; justify-content:center; margin:auto; padding:0px; margin-bottom:0px;">
-        <div style="margin-right: -4px;">
-            <center style="margin-bottom:5px;font-size: 0.7em;"><b>Sample proficient-human eye-in-hand demonstrations </b></center>
-            <video width="290" controls>
-                <source src="resources/videos/cube-stacking/cube-stacking_task-gen_robot+play_rollouts.mp4" type="video/mp4">
-            </video>
-        </div>
-        <div style="margin-left: -4px;">
-            <center style="margin-bottom:5px;font-size: 0.7em;"><b>Sample proficient-human 3rd-person demonstrations</b></center>
-            <video width="290" controls>
-                <source src="resources/videos/cube-stacking/cube-stacking_task-gen_robot+human+cyclegan_rollouts.mp4" type="video/mp4">
-            </video>
-        </div>
-    </div>
-        <h2 id="section6">Franka Real World</h2>
-        <center>
-          <b>Left:</b> sample wrist camera demonstrations <br><b>Right:</b> Behind the Scenes: Capturing Our Demonstrations
-        </center>
-        <h3 style="text-decoration: underline;font-style: italic;">Can pick-and-place task</h3>
-        <div class="table-like" style="display: flex; justify-content:center; margin:auto; padding:0px; margin-bottom:0px;">
-          <div style="margin-right: -4px;">
-              <center style="margin-bottom:5px"><b>Sample eye-in-hand demonstrations</b></center>
-              <video width="290" controls>
-                  <source src="resources/videos/cube-stacking/cube-stacking_task-gen_robot+play_rollouts.mp4" type="video/mp4">
-              </video>
-          </div>
-          <div style="margin-left: -4px;">
-              <center style="margin-bottom:5px"><b>Behind the scenes</b></center>
-              <video width="290" controls>
-                  <source src="resources/videos/cube-stacking/cube-stacking_task-gen_robot+human+cyclegan_rollouts.mp4" type="video/mp4">
-              </video>
-          </div>
-      </div>
-        <h3 style="text-decoration: underline;font-style: italic;">Box reorienting and stacking task</h3>
-        <div class="table-like" style="display: flex; justify-content:center; margin:auto; padding:0px; margin-bottom:0px;">
-          <div style="margin-right: -4px;">
-              <center style="margin-bottom:5px"><b>Sample eye-in-hand demonstrations</b></center>
-              <video width="290" controls>
-                  <source src="resources/videos/cube-stacking/cube-stacking_task-gen_robot+play_rollouts.mp4" type="video/mp4">
-              </video>
-          </div>
-          <div style="margin-left: -4px;">
-              <center style="margin-bottom:5px"><b>Behind the scenes</b></center>
-              <video width="290" controls>
-                  <source src="resources/videos/cube-stacking/cube-stacking_task-gen_robot+human+cyclegan_rollouts.mp4" type="video/mp4">
-              </video>
-          </div>
-      </div>
-     
-      </div>
-    </div> -->
-    <!-- Script for expanding page when button is clicked -->
-    <script>
-      var coll = document.getElementsByClassName("collapsible");
-      var i;
-      for (i = 0; i < coll.length; i++) {
-        coll[i].addEventListener("click", function() {
-          this.classList.toggle("active");
-          var content = this.nextElementSibling;
-          if (content.style.display === "block") {
-            content.style.display = "none";
-          } else {
-            content.style.display = "block";
-          }
-          document.getElementById('playdata').scrollIntoView();
-        });
-      }
-
-        ['#section4', '#section5', '#section6'].forEach(section => {
-    document.querySelector(`a[href="${section}"]`).addEventListener('click', function() {
-        const contentElement = document.querySelector('.content');
-
-        if (contentElement.style.display === 'none' || contentElement.style.display === '') {
-  contentElement.style.display = 'block';
-}
-    });
-});
-
 
 
 
